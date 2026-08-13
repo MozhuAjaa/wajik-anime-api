@@ -13,13 +13,23 @@ export default async function getHTML(
   const url = new URL(pathname, baseUrl);
   const headers: Record<string, string> = {
     "User-Agent": userAgent,
+    Accept:
+      "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Upgrade-Insecure-Requests": "1",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-User": "?1",
+    "Cache-Control": "max-age=0",
   };
 
   if (ref) {
-    headers.Refferer = ref.startsWith("http") ? ref : new URL(ref, baseUrl).toString();
+    headers.Referer = ref.startsWith("http") ? ref : new URL(ref, baseUrl).toString();
   }
 
-  const response = await fetch(url, { headers, redirect: "manual" });
+  const response = await fetch(url, { headers, redirect: "follow" });
 
   if (!response.ok) {
     response.status > 399 ? errorinCuy(response.status) : errorinCuy(404);
