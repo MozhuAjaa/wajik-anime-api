@@ -54,6 +54,13 @@ app.use("/oploverz", oploverzRouter);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`server is running on http://localhost:${PORT}`);
-});
+// Vercel serverless: export the Express app as the default handler.
+// `app.listen` only runs in a real Node server (local/self-hosted) so the
+// same code works both on Vercel and with `npm start`.
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(`server is running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
